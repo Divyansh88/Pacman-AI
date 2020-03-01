@@ -484,6 +484,7 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
+        "BFS is best and straightforward. Other algorithm like UCS, A* is good but BFS gives best result among them."
         return search.breadthFirstSearch(problem)
         util.raiseNotDefined()
 
@@ -518,6 +519,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         The state is Pacman's position. Fill this in with a goal test that will
         complete the problem definition.
         """
+        "Get all food as list and if state is food or not if food then return true else return false."
         x,y = state
 
         "*** YOUR CODE HERE ***"
