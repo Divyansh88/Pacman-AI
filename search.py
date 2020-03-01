@@ -91,6 +91,12 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
+    "Open list contains all nodes which are going to be visited and closed list contains all visited nodes. " \
+    "First we push starting position and empty list(path to that node) in Stack(open_list) then we check if it is starting is goal then return nothing." \
+    "Until open list is empty pop element (LIFO) so it will go to depth. If that element is goal then return path." \
+    "If that element is not in closed list add it to closed list then get all children of that node by getSuccessors." \
+    "Check for all children if it is already in closed list or not if not then add path to that node by adding parents path + node's path." \
+    "Then push it to the stack and check again."
     open_list = Stack()
     open_list.push((problem.getStartState(), []))
     closed_list = set()
@@ -104,17 +110,23 @@ def depthFirstSearch(problem):
             return x[1]
         if x[0] not in closed_list:
             closed_list.add(x[0])
-            neighbours = problem.getSuccessors(x[0])
-            for n in neighbours:
-                if n[0] not in closed_list:
-                    new_path = x[1] + [n[1]]
-                    open_list.push((n[0], new_path))
+            children = problem.getSuccessors(x[0])
+            for child in children:
+                if child[0] not in closed_list:
+                    new_path = x[1] + [child[1]]
+                    open_list.push((child[0], new_path))
 
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
+    "Open list contains all nodes which are going to be visited and closed list contains all visited nodes. " \
+    "First we push starting position and empty list(path to that node) in Stack(open_list) then we check if it is starting is goal then return nothing." \
+    "Until open list is empty pop element (FIFO) so it will go to level. If that element is goal then return path." \
+    "If that element is not in closed list add it to closed list then get all children of that node by getSuccessors." \
+    "Check for each child if it is already in closed list or not if not then add path to that node by adding parents path + node's path." \
+    "Then push it to the queue and check again."
     open_list = Queue()
     open_list.push((problem.getStartState(), []))
     closed_list = set()
@@ -128,17 +140,23 @@ def breadthFirstSearch(problem):
             return x[1]
         if x[0] not in closed_list:
             closed_list.add(x[0])
-            neighbours = problem.getSuccessors(x[0])
-            for n in neighbours:
-                if n[0] not in closed_list:
-                    new_path = x[1] + [n[1]]
-                    open_list.push((n[0], new_path))
+            children = problem.getSuccessors(x[0])
+            for child in children:
+                if child[0] not in closed_list:
+                    new_path = x[1] + [child[1]]
+                    open_list.push((child[0], new_path))
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-
+    "Open list contains all nodes which are going to be visited and closed list contains all visited nodes. " \
+    "First we push starting position and empty list(path to that node) in Stack(open_list) then we check if it is starting is goal then return nothing." \
+    "Until open list is empty pop element (cost) so it will go by priority. If that element is goal then return path." \
+    "If that element is not in closed list add it to closed list then get all children of that node by getSuccessors." \
+    "Check for all children if it is already in closed list or not if not then add path to that node by adding parents path + node's path." \
+    "Also add cost to that node by adding parents cost + node's cost." \
+    "Then push it to the priority queue and check again."
     open_list = PriorityQueue()
     open_list.push((problem.getStartState(), [], 0), 0)
     closed_list = set()
@@ -152,12 +170,12 @@ def uniformCostSearch(problem):
             return x[1]
         if x[0] not in closed_list:
             closed_list.add(x[0])
-            neighbours = problem.getSuccessors(x[0])
-            for n in neighbours:
-                if n[0] not in closed_list:
-                    new_path = x[1] + [n[1]]
-                    new_cost = x[2] + n[2]
-                    open_list.push((n[0], new_path, new_cost), new_cost)
+            children = problem.getSuccessors(x[0])
+            for child in children:
+                if child[0] not in closed_list:
+                    new_path = x[1] + [child[1]]
+                    new_cost = x[2] + child[2]
+                    open_list.push((child[0], new_path, new_cost), new_cost)
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
@@ -170,6 +188,14 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
+    "Open list contains all nodes which are going to be visited and closed list contains all visited nodes. " \
+    "First we push starting position and empty list(path to that node) in Stack(open_list) then we check if it is starting is goal then return nothing." \
+    "Until open list is empty pop element (lowest combined cost) so it will go by priority. If that element is goal then return path." \
+    "If that element is not in closed list add it to closed list then get all children of that node by getSuccessors." \
+    "Check for all children if it is already in closed list or not if not then add path to that node by adding parents path + node's path." \
+    "Also add cost to that node by adding parents cost + node's cost." \
+    "Also add combined cost by adding actual cost + heuristic." \
+    "Then push it to the priority queue and check again."
     open_list = PriorityQueue()
     open_list.push((problem.getStartState(), [], 0), 0)
     closed_list = set()
@@ -183,13 +209,13 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             return x[1]
         if x[0] not in closed_list:
             closed_list.add(x[0])
-            neighbours = problem.getSuccessors(x[0])
-            for n in neighbours:
-                if n[0] not in closed_list:
-                    new_path = x[1] + [n[1]]
-                    actual_cost = x[2] + n[2]
-                    total_cost = actual_cost + heuristic(n[0], problem)
-                    open_list.push((n[0], new_path, actual_cost), total_cost)
+            children = problem.getSuccessors(x[0])
+            for child in children:
+                if child[0] not in closed_list:
+                    new_path = x[1] + [child[1]]
+                    actual_cost = x[2] + child[2]
+                    combined_cost = actual_cost + heuristic(child[0], problem)
+                    open_list.push((child[0], new_path, actual_cost), combined_cost)
     util.raiseNotDefined()
 
 
