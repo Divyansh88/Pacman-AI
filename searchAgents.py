@@ -296,6 +296,7 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
+        "Returns the start state and Corners Visited (initially empty list)"
         cornersVisited =()
         return self.startingPosition, cornersVisited
 
@@ -304,9 +305,9 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        #state[0] is current llocation
-        #state[1] is list of traversed corners.
-        #There are 4 corners. so once you've been to 4 corners your job is done.
+        "state[0] is current location"
+        "state[1] is list of traversed corners."
+        "There are 4 corners. so once you've been to 4 corners your job is done."
         if len(state[1]) == 4:
             return True
         return False
@@ -332,6 +333,10 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
+
+            "Visit all the neighbours or successors based on x,y coordinates"
+
+
             x, y = state[0]
             visited = state[1]
             dx, dy = Actions.directionToVector(action)
@@ -339,13 +344,13 @@ class CornersProblem(search.SearchProblem):
             hitsWall = self.walls[nextx][nexty]
 
             if not hitsWall:
-                #the next node to visit based on x,y coordinates
                 nextState = (nextx, nexty)
                 #if it is one of the corners and if it is not already visited
                 if nextState in self.corners and nextState not in state[1]:
                     visited += (nextState,)
-                #Create a newState according to the latest details of space and append to the successor list
+                #Create a newState according to the latest details of space
                 newState = (nextState,visited)
+                #append to the successor list
                 successors.append((newState, action, 1))
 
         self._expanded += 1 # DO NOT CHANGE
@@ -382,6 +387,10 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of pytthe maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
+
+    "Calculate the heuristic based on distance and return the maximum heuristic value"
+
+
     x,y = state[0]
     currentState = (x, y)
     visited = state[1]
@@ -489,10 +498,11 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
+
+    "For each food position in the list of food grid, calculate maze distances towards the current position"
+    "The maximum of these would be the farthest food point."
     heuristic = 0
     foodList = foodGrid.asList()
-    # For each food position in the list of food grid, calculate maze distances towards the
-    # current position. The maximum of these would be the farthest food point.
     for food in foodList:
         distance = mazeDistance(food, position, problem.startingGameState)
         heuristic = max(heuristic, distance)
